@@ -3,9 +3,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
+const path = require('path');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+//habilitar public
+app.use(express.static(path.resolve(__dirname, '../public')));
 
 //Configuración global de rutas
 app.use(require('./routes/index'));
