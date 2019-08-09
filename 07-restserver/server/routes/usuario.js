@@ -5,7 +5,15 @@ const app = express();
 
 const Usuario = require('../models/usuario');
 
-app.get('/usuario', (req, res) => {
+const { verificaToken, verificaAdmin_Role } = require('../middlewares/autenticacion');
+
+app.get('/usuario', verificaToken, (req, res) => {
+
+  // return res.json({
+  //   usuario: req.usuario,
+  //   nombre: req.usuario.nombre,
+  //   email: req.usuario.email
+  // })
 
   let desde = req.query.desde || 0;
   desde = Number(desde);
@@ -36,7 +44,7 @@ app.get('/usuario', (req, res) => {
 
 });
 
-app.post('/usuario', (req, res)=>{
+app.post('/usuario', [verificaToken, verificaAdmin_Role], (req, res)=>{
 
   let body = req.body;
 
@@ -64,7 +72,7 @@ app.post('/usuario', (req, res)=>{
   });
 });
 
-app.put('/usuario/:id', (req, res)=>{
+app.put('/usuario/:id', [verificaToken, verificaAdmin_Role], (req, res)=>{
   let id = req.params.id;
   let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
 
@@ -83,7 +91,7 @@ app.put('/usuario/:id', (req, res)=>{
 
 });
 
-app.delete('/usuario/:id', function(req, res){
+app.delete('/usuario/:id', [verificaToken, verificaAdmin_Role], function(req, res){
   let id = req.params.id;
   let cambiaEstado = {
     estado: false

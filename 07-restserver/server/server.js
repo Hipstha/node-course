@@ -7,7 +7,8 @@ const mongoose = require('mongoose');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-app.use(require('./routes/usuario'));
+//Configuración global de rutas
+app.use(require('./routes/index'));
 
 mongoose.connect(process.env.URLDB,
   { useNewUrlParser: true, useCreateIndex: true },
